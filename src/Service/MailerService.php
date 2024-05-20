@@ -39,4 +39,23 @@ class MailerService
 
         $this->mailer->send($email);
     }
+
+    public function SendEmailResetPassword(string $email, string $token, string $user): void
+    {
+        $verificationUrl = $this->urlGenerator->generate(
+            'app_forgot_password',
+            ['token' => $token],
+            UrlGeneratorInterface::ABSOLUTE_URL
+        );
+
+        $email = (new Email())
+            ->from('no-reply@snowtricks.com')
+            ->to($email)
+            ->subject('Reinitialiser votre mot de passe ')
+            ->html($this->twig->render('security/reinitialise_password.html.twig', [
+                'tokenUrl' => $verificationUrl, 'user' => $user
+            ]));
+
+        $this->mailer->send($email);
+    }
 }
