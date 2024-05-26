@@ -55,3 +55,18 @@ p {
   border-color: #064534;
   color: #fff;
 }
+
+.bg-approche {
+  background-color: #194d3e;
+  border-color: #064534;
+}
+.bg-image {
+  background-color: #194d3e;
+  border-color: #064534;
+}
+
+.flash {
+  background-color: #194d3e;
+  border-color: #064534;
+  width: 50%;
+}

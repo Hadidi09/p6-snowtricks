@@ -40,10 +40,10 @@ class MailerService
         $this->mailer->send($email);
     }
 
-    public function SendEmailResetPassword(string $email, string $token, string $user): void
+    public function SendEmailResetPassword(string $email, string $token, string $name): void
     {
         $verificationUrl = $this->urlGenerator->generate(
-            'app_forgot_password',
+            'app_new_password',
             ['token' => $token],
             UrlGeneratorInterface::ABSOLUTE_URL
         );
@@ -53,7 +53,7 @@ class MailerService
             ->to($email)
             ->subject('Reinitialiser votre mot de passe ')
             ->html($this->twig->render('security/reinitialise_password.html.twig', [
-                'tokenUrl' => $verificationUrl, 'user' => $user
+                'tokenUrl' => $verificationUrl, 'user' => $name
             ]));
 
         $this->mailer->send($email);
