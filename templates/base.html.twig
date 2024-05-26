@@ -21,9 +21,12 @@
         </header>
     {% for type, messages in app.flashes %}
         {% for message in messages %}
-            <div class="alert alert-{{ type }}">
+        <div class="d-flex justify-content-center align-items-center mt-5 flash">
+            
                 <p>{{ message }}</p>
-            </div>
+            
+        </div>
+            
         {% endfor %}
     {% endfor %}
 

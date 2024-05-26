@@ -15,7 +15,6 @@
                 You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Déconnexion</a>
             </div>
         {% endif %}
-
         <h1 class="h3 mb-3 font-weight-normal">Connexion</h1>
         <label for="username">Email</label>
         <input type="email" value="{{ last_username }}" name="_username" id="username" class="form-control" autocomplete="email" required autofocus>
@@ -25,22 +24,14 @@
         <input type="hidden" name="_csrf_token"
                value="{{ csrf_token('authenticate') }}"
         >
-
-        
-       
             <div class="checkbox mb-3">
                 <label>
                     <input type="checkbox" name="_remember_me"> Se rappeler de moi
                 </label>
-            </div>
-                 
-                    
+            </div>                   
             <a href="{{ path('app_forgot_password') }}" 
                     class="link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
-                     type="button" name="mdp_oublie"> Mot de passe oublié </a>
-                
-       
-        
+                     type="button" name="mdp_oublie"> Mot de passe oublié </a> 
         <button class="btn btn-lg btn-primary mt-2" type="submit">
            Connexion
         </button>

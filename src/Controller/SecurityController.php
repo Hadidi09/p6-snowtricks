@@ -5,12 +5,14 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\ForgotPasswordType;
 use App\Form\RegistrationFormType;
+use App\Form\ReInitialisePasswordType;
 use App\Repository\UserRepository;
 use App\Service\MailerService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
@@ -40,14 +42,14 @@ class SecurityController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/logout', name: 'app_logout')]
+    #[Route(path: '/deconnexion', name: 'app_logout')]
     public function logout(): void
     {
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
 
     #[Route(path: '/mot_de_passe_oublie', name: 'app_forgot_password')]
-    public function resetPassword(Request $request, UserRepository $userRepository, EntityManagerInterface $em, MailerService $mailerService): Response
+    public function sendEmailResetPassword(Request $request, UserRepository $userRepository, EntityManagerInterface $em, MailerService $mailerService): Response
     {
 
         $form = $this->createForm(ForgotPasswordType::class);
@@ -77,6 +79,49 @@ class SecurityController extends AbstractController
             'security/mot_de_passe_oublie.html.twig',
             [
                 'form' => $form
+            ]
+        );
+    }
+
+    #[Route(path: '/nouveau_mot_de_passe/{token}', name: 'app_new_password')]
+    public function resetPassword(
+        Request $request,
+        UserRepository $userRepository,
+        EntityManagerInterface $em,
+        string $token,
+        UserPasswordHasherInterface $userPasswordHasher
+    ): Response {
+
+        $form = $this->createForm(ReInitialisePasswordType::class);
+        $form->handleRequest($request);
+
+        $user = $userRepository->findOneBy(['tokenVerified' => $token]);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $password = $form->get('plainPassword')->getData();
+
+            if ($user) {
+                $user->setPassword(
+                    $userPasswordHasher->hashPassword(
+                        $user,
+                        $password
+                    )
+                );
+            }
+
+            $newToken = '';
+            $user->setTokenVerified($newToken);
+
+            $em->flush();
+
+            $this->addFlash('success', 'Votre mot de passe a été  changé avec succès ');
+            return $this->redirectToRoute('app_login');
+        }
+
+        return $this->render(
+            'security/new_password.html.twig',
+            [
+                'form' => $form,
             ]
         );
     }
