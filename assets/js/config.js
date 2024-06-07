@@ -31,6 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   function addFormToCollection(e) {
+    e.preventDefault();
     const collectionHolder = document.querySelector(
       "." + e.currentTarget.dataset.collectionHolderClass
     );

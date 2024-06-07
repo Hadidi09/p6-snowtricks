@@ -78,3 +78,13 @@ p {
   color: #fff;
   font-size: x-large;
 }
+.custom-img {
+  height: 200px; /* Fixed height */
+  min-width: 300px; /* Auto width to maintain aspect ratio */
+  /* Ensures the image is responsive */
+  object-fit: cover; /* Ensures the image covers the container, cropping if necessary */
+}
+
+.remove-item {
+  margin: 2% 0%;
+}

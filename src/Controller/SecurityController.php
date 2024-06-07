@@ -10,6 +10,7 @@ use App\Repository\UserRepository;
 use App\Service\MailerService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -35,6 +36,13 @@ class SecurityController extends AbstractController
         $lastUsername = $authenticationUtils->getLastUsername();
 
         $user = $userRepository->findOneBy(['email' => $lastUsername]);
+
+
+        if ($this->getUser()) {
+            return new RedirectResponse($this->generateUrl('app_accueil'));
+        }
+
+
 
         return $this->render('security/login.html.twig', [
             'last_username' => $lastUsername,
