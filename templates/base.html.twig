@@ -19,16 +19,16 @@
         <header>
             {% include "partials/header.html.twig" %}
         </header>
-    {% for type, messages in app.flashes %}
-        {% for message in messages %}
-        <div class="d-flex justify-content-center align-items-center mt-5 flash">
-            
-                <p>{{ message }}</p>
-            
+
+        <div class="d-flex justify-content-center ">
+            {% for type, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ type }} mt-3 flashMessage w-50 ">
+                        <p class="text-black text-center">{{ message }}</p>
+                    </div>
+                {% endfor %}
+            {% endfor %}
         </div>
-            
-        {% endfor %}
-    {% endfor %}
 
         {% block body %}{% endblock %}
          <header>

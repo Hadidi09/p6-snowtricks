@@ -73,3 +73,8 @@ p {
   border-color: #064534;
   width: 50%;
 }
+
+.invalid-feedback {
+  color: #fff;
+  font-size: x-large;
+}
