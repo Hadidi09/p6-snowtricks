@@ -8,18 +8,24 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
                 <ul class="navbar-nav ms-auto">
-                    {# <li class="nav-item">
-                        <a class="nav-link {{ app.request.attributes.get('_route') == 'app_accueil' ? 'active' : '' }}" aria-current="page" href="{{ path('app_accueil') }}">Page d'accueil</a>
-                    </li> #}
                     <li class="nav-item">
-                        <a class="nav-link {{ app.request.attributes.get('_route') == 'app_register' ? 'active' : '' }}" href="{{ path('app_register') }}">inscription</a>
+                        <a class="nav-link {{ app.request.attributes.get('_route') == 'app_accueil' ? 'active' : '' }}" aria-current="page" target="_self" href="{{ path('app_accueil') }}">Page d'accueil</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ app.request.attributes.get('_route') == 'app_login' ? 'active' : '' }}" href="{{ path('app_login')}}">Connexion</a>
-                    </li> 
+                    {% if app.user %} 
                      <li class="nav-item">
-                        <a class="nav-link {{ app.request.attributes.get('_route') == 'app_logout' ? 'active' : '' }}" href="{{ path('app_logout') }}">Deconnexion</a>
+                        <a class="nav-link {{ app.request.attributes.get('_route') == 'app_logout' ? 'active' : '' }}" target="_self"  href="{{ path('app_logout') }}">Deconnexion</a>
                     </li>
+                     <li class="nav-item">
+                        <a class="nav-link {{ app.request.attributes.get('_route') == 'app_figure_tricks' ? 'active' : '' }}" target="_self"  href="{{ path('app_figure_tricks') }}">Créer une figure</a>
+                    </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link {{ app.request.attributes.get('_route') == 'app_register' ? 'active' : '' }}" target="_self" href="{{ path('app_register') }}">inscription</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ app.request.attributes.get('_route') == 'app_login' ? 'active' : '' }}" target="_self"  href="{{ path('app_login')}}">Connexion</a>
+                        </li>
+                    {% endif %}
                 </ul>
             </div>
         </div>
