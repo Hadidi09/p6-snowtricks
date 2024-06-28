@@ -10,146 +10,67 @@
          <h1 class="d-flex flex-column justify-content-center align-items-center ">SnowTricks</h1>
       
       <div class="container bg-approche rounded p-2 d-flex flex-column justify-content-center align-items-center position-relative ">
-        <img src="https://images.unsplash.com/photo-1507492147080-3d1b3e5cd0aa?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Njh8fHNraXxlbnwwfHwwfHx8MA%3D%3D" alt="Logo" width="80%" height="450" class="d-inline-block align-text-top" width="150" height="80" alt="logo de la can 2023" class="img-fluid">
-        <p class="position-absolute top-0 start-50 translate-middle-x text-white fw-bold fs-3 z-3 text-center">Bonjour et bienvenue Chez Snowtricks</p>
-        <button id="show-cards-btn" class="btn btn-primary mt-3 align-self-end">
-                <i class="fas fa-arrow-down"></i>
-        </button>
+      {% if images|length > 0 %}
+            {% set image = images|first %}
+            {% if image.filename|length > 0 %}
+                {% set homeImage = image.filename %}
+                <div class="container bg-approche rounded p-2 d-flex flex-column justify-content-center align-items-center position-relative">
+                    <img src="{{ asset('uploads/' ~ homeImage) }}" alt="Logo" class="d-inline-block align-text-top img-fluid homeImage">
+                    <p class="position-absolute top-0 start-50 translate-middle-x text-white fw-bold fs-3 z-3 text-center">Bonjour et bienvenue Chez Snowtricks</p>
+                </div>
+            {% endif %}
+        {% endif %}
       </div>
         <div class="text-center d-none" id="spinner">
             <div class="spinner-border" role="status">
                 <span class="visually-hidden">Loading...</span>
             </div>
         </div>
-       <div id="cards-container" class="container d-none bg-image rounded p-2 d-flex flex-column flex-md-row flex-md-wrap  justify-content-center align-items-center gap-2">
-            <div class="card" style="width: 18rem;">
-                <img src="https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8c2tpfGVufDB8fDB8fHww" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <h5 class="card-title text-black">Card title</h5>
-                        <div>
-                            {% if not  app.user %}
-                                
-                                <a href="" class="btn btn-secondary">
-                                    <i class="fas fa-pen"></i>
-                                </a>
-                                <a href="" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet élément ?');">
-                                <i class="fas fa-trash"></i> 
-                                </a>
-                            {% endif %}
-                        </div>
-                    </div>
-                    
-                </div>
-            </div>
-            
-            <div class="card" style="width: 18rem;">
-                <img src="https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8c2tpfGVufDB8fDB8fHww" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <h5 class="card-title text-black">Card title</h5>
-                        <div>
-                            {% if not  app.user %}
-                                
-                                    <a href="" class="btn btn-secondary">
+       <div id="cards-container" class="container  bg-image rounded p-2 d-flex flex-column flex-md-row flex-md-wrap  justify-content-center align-items-center gap-2">
+            {% for figure in figures %}
+                <div class="card" style="width: 18rem;">
+                    {% if figure.image|length > 0 %}
+                        {% set firstImage = figure.image|first %}
+                        <a href="{{ path('figure_details', {slug: figure.slug}) }}">
+                             <img src="{{ asset('uploads/' ~ firstImage.fileName) }}" class="card-img-top custom-img" alt="{{ figure.description}}">
+                        </a>   
+                    {% endif %}    
+                    <div class="card-body bg-body rounded">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="card-title text-white">{{figure.nom}}</h5>
+                            <div>
+                                {% if app.user %}
+                                    <a href="{{ path('app_figure_edit', {slug: figure.slug}) }}" class="btn btn-secondary btn-sm">
                                         <i class="fas fa-pen"></i>
                                     </a>
-                                    <a href="" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet élément ?');">
-                                    <i class="fas fa-trash"></i> 
-                                    </a>
-                            {% endif %}
+                                    <div class="my-2 ">
+                                        <button type="button" class="btn btn-danger btn-sm remove-figure" data-id="{{ figure.id}}" data-url="{{ path('remove_figure', {id: figure.id }) }}">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
-                    
                 </div>
-            </div>
-            <div class="card" style="width: 18rem;">
-                <img src="https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8c2tpfGVufDB8fDB8fHww" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <h5 class="card-title text-black">Card title</h5>
-                        <div>
-                            {% if not  app.user %}
-                                
-                                    <a href="" class="btn btn-secondary">
-                                        <i class="fas fa-pen"></i>
-                                    </a>
-                                    <a href="" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet élément ?');">
-                                    <i class="fas fa-trash"></i> 
-                                    </a>
-                            {% endif %}
-                        </div>
-                    </div>
-                    
-                </div>
-            </div>
-            
-            <div class="card" style="width: 18rem;">
-                <img src="https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8c2tpfGVufDB8fDB8fHww" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <h5 class="card-title text-black">Card title</h5>
-                        <div>
-                            {% if not  app.user %}
-                                
-                                    <a href="" class="btn btn-secondary">
-                                        <i class="fas fa-pen"></i>
-                                    </a>
-                                    <a href="" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet élément ?');">
-                                    <i class="fas fa-trash"></i> 
-                                    </a>
-                            {% endif %}
-                        </div>
-                    </div>
-                    
-                </div>
-            </div>
-            <div class="card" style="width: 18rem;">
-                <img src="https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8c2tpfGVufDB8fDB8fHww" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <h5 class="card-title text-black">Card title</h5>
-                        <div>
-                            {% if not  app.user %}
-                                
-                                    <a href="" class="btn btn-secondary">
-                                        <i class="fas fa-pen"></i>
-                                    </a>
-                                    <a href="" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet élément ?');">
-                                    <i class="fas fa-trash"></i> 
-                                    </a>
-                            {% endif %}
-                        </div>
-                    </div>
-                    
-                </div>
-            </div>
-            
-            <div class="card" style="width: 18rem;">
-                <img src="https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8c2tpfGVufDB8fDB8fHww" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <h5 class="card-title text-black">Card title</h5>
-                        <div>
-                            {% if not  app.user %}
-                                
-                                    <a href="" class="btn btn-secondary">
-                                        <i class="fas fa-pen"></i>
-                                    </a>
-                                    <a href="" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet élément ?');">
-                                    <i class="fas fa-trash"></i> 
-                                    </a>
-                            {% endif %}
-                        </div>
-                    </div>
-                    
-                </div>
-            </div>
+            {% endfor %}
+
             <div class="container bg-approche rounded p-2 d-flex flex-column justify-content-center align-items-center position-relative ">
        
                 <button id="scroll-to-top-btn" class="btn btn-primary mt-3 align-self-end">
                         <i class="fas fa-arrow-up"></i>
                 </button>
+            </div>
+            <div class="pagination gap-1">
+                {% if currentPage > 1 %}
+                    <a href="{{ path('app_accueil', {'page': currentPage - 1}) }}" target="_self" class="btn btn-primary">Previous</a>
+                {% endif %}
+                {% for i in 1..totalPages %}
+                    <a href="{{ path('app_accueil', {'page': i}) }}" target="_self" class="btn {{ currentPage == i ? 'btn-secondary' : 'btn-primary' }}">{{ i }}</a>
+                {% endfor %}
+                {% if currentPage < totalPages %}
+                    <a href="{{ path('app_accueil', {'page': currentPage + 1}) }}" target="_self" class="btn btn-primary">Next</a>
+                {% endif %}
             </div>
        </div>
    </div>        
