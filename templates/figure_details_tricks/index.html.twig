@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails d'une figure{% endblock %}
+
+{% block body %}
+<div class="container-fluid d-flex flex-column my-2 gap-2">
+    <h1 class="d-flex flex-column justify-content-center align-items-center ">SnowTricks</h1>
+    {% if figure.image|length > 0 %}
+    <div class="container bg-approche rounded p-2 d-flex flex-column justify-content-center align-items-center position-relative">
+        {% set firstImage = figure.image|first %} <img src="{{ asset('uploads/' ~ firstImage.fileName) }}" alt="Logo" width="600" height="300" class="d-inline-block align-text-top custom-image-size">
+       
+        <div class="container w-50 d-flex flex-column  justify-content-center align-items-center bg-dark rounded my-5">
+            <h1 class="text-center">{{ figure.nom }}</h1>
+            <p class="description">{{ figure.description }}</p>
+            {# <p>{{ figure.categorie }}</p> #}
+        </div>
+        <div class="container  my-5">
+            <div class="row d-flex">
+                <div class="col-12 colonne d-flex flex-column flex-md-row flex-md-wrap gap-2 form-group">
+                    {% for image in figure.image %}
+                    <div class="d-flex justify-content-center flex-column gap-2 align-items-center mb-2">
+                        <img class="img-fluid custom-img" src="{{ asset('uploads/' ~ image.fileName) }}" alt="figure_tricks">
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+           {% for video in figure.videos %}
+                <div class="d-flex justify-content-center flex-column gap-2 align-items-center mb-2">
+                    {% set embed_url = video.url | replace({'watch?v=': 'embed/'}) %}
+                    {% set embed_url = embed_url | replace({'&': '?', '?': '&'}, 1) %}
+                    <iframe width="300" class="rounded" height="200" title="les titres" src="{{ embed_url }}" allowfullscreen></iframe>
+                </div>
+            {% endfor %}
+
+        </div>
+        <div class=" container-fluid bg-comment rounded p-2 d-flex flex-column justify-content-center align-items-center">
+            <div class="  position-relative">
+            <h6 class="text-white text-center">Commentaires</h6>
+            {% if app.user %}
+                {{ form_start(comment, {'action': path('app_comment_tricks', {'slug': figure.slug})}) }}
+                    {{ form_row(comment.content) }}
+                    <button type="submit" name="commenter" class="btn btn-primary mb-1">Commenter</button>
+                {{ form_end(comment) }}
+            {% endif %}
+            </div>
+
+            <div class=" d-flex flex-column flex-start rounded p-4  comment-bg gap-5">
+                {% for comment in figure.commentaires %}
+                    <div class="d-flex bg-comment p-4 rounded ">
+                        <div>
+                            <h6 class="fw-bold mb-1 text-white">{{ comment.author.name}}</h6>
+                            <img class="rounded-circle shadow-1-strong me-3" src="https://img.freepik.com/photos-gratuite/rendu-3d-avatar-appel-zoom_23-2149556777.jpg?size=626&ext=jpg&ga=GA1.1.312850530.1686663477&semt=ais" alt="avatar" width="60" height="60" />
+                        </div> 
+                        <div class="w-100 d-flex flex-column ">
+                            
+                            <div class="d-flex align-items-center align-self-end mb-3">
+                                <p class="mb-0">{{ comment.createdAt|date('d/m/y H:i:s') }}</p>
+                            </div>
+                            <p class="mb-0">{{ comment.content }}</p>
+                        </div>                
+                    </div>
+                    
+                {% endfor %}
+            </div>
+             
+        </div>
+    </div>
+    {% endif %}
+    
+        {# {{ form_errors(form) }} #}
+        
+    
+</div>
+{% endblock %}

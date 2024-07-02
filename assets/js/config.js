@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("turbo:load", () => {
   let button = document.getElementById("show-cards-btn");
   let container = document.getElementById("cards-container");
   let spinner = document.getElementById("spinner");

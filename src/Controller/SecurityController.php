@@ -21,11 +21,7 @@ use function PHPUnit\Framework\throwException;
 
 class SecurityController extends AbstractController
 {
-    // #[Route(path: '/inscription', name: 'app_sign_up')]
-    // public function signUp(): Response {
 
-
-    // }
     #[Route(path: '/connexion', name: 'app_login')]
     public function login(AuthenticationUtils $authenticationUtils, UserRepository $userRepository): Response
     {

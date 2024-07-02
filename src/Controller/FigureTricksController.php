@@ -14,14 +14,24 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 class FigureTricksController extends AbstractController
 {
-    #[Route('/creation_figure', name: 'app_figure_tricks')]
-    public function index(Request $request, EntityManagerInterface $em, FileUploader $fileUploader): Response
-    {
-        $figure = new Figure();
+    private $slugger;
 
+    public function __construct(SluggerInterface $slugger)
+    {
+        $this->slugger = $slugger;
+    }
+    #[Route('/creation_figure', name: 'app_figure_tricks')]
+    public function index(
+        Request $request,
+        EntityManagerInterface $em,
+        FileUploader $fileUploader
+    ): Response {
+        $figure = new Figure();
+        $now = new \DateTimeImmutable();
         $form = $this->createForm(FigureType::class, $figure);
         $form->handleRequest($request);
 
@@ -49,6 +59,9 @@ class FigureTricksController extends AbstractController
             }
 
             try {
+                $figure->setCreatedAt($now->setTimestamp($now->getTimestamp()));
+                $figure->setUpdatedAt($now->setTimestamp($now->getTimestamp()));
+                $figure->setSlug($this->slugger->slug($figure->getNom())->lower());
                 $em->persist($figure);
                 $em->flush();
 
@@ -65,10 +78,10 @@ class FigureTricksController extends AbstractController
         ], new Response(null, $form->isSubmitted() && !$form->isValid() ? 422 : 200));
     }
 
-    #[Route('/edit_tricks/{id}', name: 'app_figure_edit')]
-    public function edit(Request $request, EntityManagerInterface $em, FileUploader $fileUploader, int $id): Response
+    #[Route('/edit_tricks/{slug}', name: 'app_figure_edit')]
+    public function edit(Request $request, EntityManagerInterface $em, FileUploader $fileUploader, string $slug): Response
     {
-        $figure = $em->getRepository(Figure::class)->find($id);
+        $figure = $em->getRepository(Figure::class)->findOneBy(['slug' => $slug]);
 
         if (!$figure) {
             throw $this->createNotFoundException('Figure not found');
@@ -102,7 +115,7 @@ class FigureTricksController extends AbstractController
             $em->flush();
 
             $this->addFlash('success', 'Figure modifiée avec succès !');
-            return $this->redirectToRoute('app_figure_edit', ['id' => $figure->getId()]);
+            return $this->redirectToRoute('app_figure_edit', ['slug' => $slug]);
         }
 
         return $this->render('figure_tricks/edit.html.twig', [
@@ -111,11 +124,24 @@ class FigureTricksController extends AbstractController
         ]);
     }
 
+    #[Route('/remove_figure/{id}', name: 'remove_figure', methods: ['DELETE'])]
+    public function removeFigure(int $id, EntityManagerInterface $em): JsonResponse
+    {
+        $figure = $em->getRepository(Figure::class)->find($id);
+        if (!$figure) {
+            return new JsonResponse('Figure  non trouvée', 404);
+        }
+
+        $em->remove($figure);
+        $em->flush();
+        $this->addFlash('success', 'Suppression de l\'image');
+        return new JsonResponse(['message' => 'Suppression de la figure'], 200);
+    }
+
     #[Route('/remove_image/{id}', name: 'remove_image', methods: ['DELETE'])]
     public function removeImage(int $id, EntityManagerInterface $em): JsonResponse
     {
         $images = $em->getRepository(Images::class)->find($id);
-        //  dd($images);
         if (!$images) {
             return new JsonResponse('Image  non trouvée', 404);
         }
