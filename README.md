@@ -28,14 +28,14 @@ Développez de A à Z le site communautaire SnowTricks
 
 Dans le fichier **.env** existant à la racine du projet, assurez-vous que la variable d'environnement suivante est présente :
 
-    `` DATABASE_URL=${DATABASE_URL} ``
+`DATABASE_URL=${DATABASE_URL}`
 
 4.  Exécuter la commande :
 
 `php bin/console doctrine:database:create`
 
 5.  Pour créez les tables
-    Exécuter une la commande :
+    Exécuter la commande :
 
 `php bin/console make:migration`
 
@@ -47,11 +47,11 @@ puis la commande :
 
    `php bin/console doctrine:fixtures:load`
 
-7. Télécharger l'exécutable de mailHog , en vous rendant sur cette page : Mailhog tutoriel vous pouvez suivre cet article qui vous aide à l'installer et le lancer https://github.com/mailhog/MailHog/releases. En choississant la version correspondant à votre OS.
+7. Télécharger l'exécutable de mailHog , en vous rendant sur cette page : Mailhog tutoriel vous pouvez suivre cet article qui vous aide à l'installer et le lancer https://github.com/mailhog/MailHog/releases. En choisissant la version correspondant à votre OS.
 
-8. Lancez l'executable de mailHog et rendez vous ici : http://localhost:8025/ pour intercépter les mails.
+8. Lancez l'exécutable de mailHog et rendez-vous ici : http://localhost:8025/ pour intercepter les mails.
 
 9. Exécutez MailHog pour intercepter les mails envoyés depuis votre pc.
 10. Démarrez le projet avec la commande
 
-    `symfony serve`
+`symfony serve`
