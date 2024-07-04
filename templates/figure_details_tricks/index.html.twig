@@ -8,11 +8,9 @@
     {% if figure.image|length > 0 %}
     <div class="container bg-approche rounded p-2 d-flex flex-column justify-content-center align-items-center position-relative">
         {% set firstImage = figure.image|first %} <img src="{{ asset('uploads/' ~ firstImage.fileName) }}" alt="Logo" width="600" height="300" class="d-inline-block align-text-top custom-image-size">
-       
         <div class="container w-50 d-flex flex-column  justify-content-center align-items-center bg-dark rounded my-5">
             <h1 class="text-center">{{ figure.nom }}</h1>
             <p class="description">{{ figure.description }}</p>
-            {# <p>{{ figure.categorie }}</p> #}
         </div>
         <div class="container  my-5">
             <div class="row d-flex">
@@ -31,7 +29,6 @@
                     <iframe width="300" class="rounded" height="200" title="les titres" src="{{ embed_url }}" allowfullscreen></iframe>
                 </div>
             {% endfor %}
-
         </div>
         <div class=" container-fluid bg-comment rounded p-2 d-flex flex-column justify-content-center align-items-center">
             <div class="  position-relative">
@@ -43,7 +40,6 @@
                 {{ form_end(comment) }}
             {% endif %}
             </div>
-
             <div class=" d-flex flex-column flex-start rounded p-4  comment-bg gap-5">
                 {% for comment in figure.commentaires %}
                     <div class="d-flex bg-comment p-4 rounded ">
@@ -58,17 +54,11 @@
                             </div>
                             <p class="mb-0">{{ comment.content }}</p>
                         </div>                
-                    </div>
-                    
+                    </div> 
                 {% endfor %}
             </div>
-             
         </div>
     </div>
     {% endif %}
-    
-        {# {{ form_errors(form) }} #}
-        
-    
 </div>
 {% endblock %}
