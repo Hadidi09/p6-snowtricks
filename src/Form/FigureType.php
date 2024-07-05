@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Figure;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -24,7 +25,14 @@ class FigureType extends AbstractType
                 ]
             ])
             ->add('description')
-            ->add('categorie')
+            ->add('categorie', ChoiceType::class, [
+                'choices' => [
+                    'Saut' => 'Saut',
+                    'Rotation' => 'Rotation',
+                    'Grab' => 'Grab',
+                    'Slide' => 'Slide',
+                ]
+            ])
             ->add('image', CollectionType::class, [
                 'entry_type' => FileType::class,
                 'entry_options' => ['label' => false],

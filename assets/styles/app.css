@@ -61,7 +61,8 @@ p {
 }
 
 .bg-comment,
-.bg-body {
+.bg-body,
+.creation {
   background-color: #e88013 !important;
 }
 
@@ -127,10 +128,9 @@ p {
   aspect-ratio: 2 / 1;
   object-fit: cover;
 }
-.description {
-  text-align: center;
+/* .description {
   width: 50%;
-}
+} */
 .homeImage {
   width: 50%;
   max-height: 500px;

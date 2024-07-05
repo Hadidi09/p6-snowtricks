@@ -9,8 +9,10 @@
     <div class="container bg-approche rounded p-2 d-flex flex-column justify-content-center align-items-center position-relative">
         {% set firstImage = figure.image|first %} <img src="{{ asset('uploads/' ~ firstImage.fileName) }}" alt="Logo" width="600" height="300" class="d-inline-block align-text-top custom-image-size">
         <div class="container w-50 d-flex flex-column  justify-content-center align-items-center bg-dark rounded my-5">
+            
             <h1 class="text-center">{{ figure.nom }}</h1>
-            <p class="description">{{ figure.description }}</p>
+            <p class="description w-100 text-md-center ">{{ figure.description }}</p>
+            <p class="d-flex align-self-end rounded creation p-2"> <span>crée le {{figure.createdAt|date('Y-m-d H:i:s')}}</span></p>
         </div>
         <div class="container  my-5">
             <div class="row d-flex">

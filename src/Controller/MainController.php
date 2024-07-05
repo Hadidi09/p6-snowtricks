@@ -23,7 +23,7 @@ class MainController extends AbstractController
         Request $request
     ): Response {
         $page = max(1, $request->query->getInt('page', 1));
-        $limit = 8;
+        $limit = 5;
         $offset = ($page - 1) * $limit;
         $figures = $figureRepository->findBy([], null, $limit, $offset);
         $figuresTotale = $figureRepository->count([]);
