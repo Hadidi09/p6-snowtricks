@@ -21,7 +21,7 @@
             {% include "partials/header.html.twig" %}
         </header>
 
-        <div class="d-flex justify-content-center ">
+        <div class="d-flex justify-content-center align-items-center flex-column ">
             {% for type, messages in app.flashes %}
                 {% for message in messages %}
                     <div class="alert alert-{{ type }} mt-3 flashMessage w-50 ">
